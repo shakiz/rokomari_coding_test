@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name = "rokomari_coding_test"
