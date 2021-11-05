@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/nav_open"
+        android:title="Open"
+        android:icon="@drawable/ic_open"/>
+    <item
+        android:id="@+id/nav_in_progress"
+        android:title="In Progress"
+        android:icon="@drawable/ic_in_progress"/>
+    <item
+        android:id="@+id/nav_test"
+        android:title="Test"
+        android:icon="@drawable/ic_test"/>
+    <item
+        android:id="@+id/nav_done"
+        android:title="Done"
+        android:icon="@drawable/ic_done"/>
+</menu>

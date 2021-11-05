@@ -1,4 +1,4 @@
-package com.shakilrokomari_coding_test;
+package com.rokomari_coding_test;
 
 import android.content.Context;
 
