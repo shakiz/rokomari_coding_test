@@ -16,4 +16,8 @@
     <color name="md_grey_500">#9E9E9E</color>
     <color name="md_grey_600">#757575</color>
     <color name="md_grey_700">#616161</color>
+    <color name="card_text_color">#8c3c3c</color>
+    <color name="card_back_color">#ebebeb</color>
+    <color name="md_grey_300">#E0E0E0</color>
+    <color name="md_grey_400">#BDBDBD</color>
 </resources>

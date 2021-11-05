@@ -10,11 +10,11 @@ import com.rokomari_coding_test.model.Task;
 
 import java.util.List;
 
-public class NoteViewModel extends AndroidViewModel {
+public class TaskViewModel extends AndroidViewModel {
     private TaskRepository repository;
     private LiveData<List<Task>> allTasks;
 
-    public NoteViewModel(@NonNull Application application) {
+    public TaskViewModel(@NonNull Application application) {
         super(application);
         repository = new TaskRepository(application);
         allTasks = repository.getAllNotes();

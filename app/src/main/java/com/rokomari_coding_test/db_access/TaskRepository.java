@@ -15,7 +15,7 @@ public class TaskRepository {
 
     public TaskRepository(Application application) {
         MasterDb masterDb = MasterDb.getInstance(application);
-        taskDAO = masterDb.noteDAO();
+        taskDAO = masterDb.taskDAO();
         allTasks = taskDAO.getAllTasks();
     }
 

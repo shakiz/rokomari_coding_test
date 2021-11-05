@@ -11,7 +11,7 @@ import com.rokomari_coding_test.model.Task;
 public abstract class MasterDb extends RoomDatabase {
     private static MasterDb instance;
 
-    public abstract TaskDAO noteDAO();
+    public abstract TaskDAO taskDAO();
 
     public static synchronized MasterDb getInstance(Context context){
         if (instance == null){

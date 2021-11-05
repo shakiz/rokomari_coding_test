@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class Task {
-    @PrimaryKey(autoGenerate = true)
-    private int RecordId;
+    @PrimaryKey(autoGenerate = false)
+    private long RecordId;
     private String CreateDate;
     private int Status;
     private String Title;
@@ -16,11 +16,26 @@ public class Task {
     private String PhoneNumber;
     private String Url;
 
-    public int getRecordId() {
+    public Task(long recordId, String createDate, int status, String title, String description, String deadline, String email, String phoneNumber, String url) {
+        RecordId = recordId;
+        CreateDate = createDate;
+        Status = status;
+        Title = title;
+        Description = description;
+        Deadline = deadline;
+        Email = email;
+        PhoneNumber = phoneNumber;
+        Url = url;
+    }
+
+    public Task() {
+    }
+
+    public long getRecordId() {
         return RecordId;
     }
 
-    public void setRecordId(int recordId) {
+    public void setRecordId(long recordId) {
         RecordId = recordId;
     }
 
