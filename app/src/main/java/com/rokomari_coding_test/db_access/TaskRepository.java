@@ -12,17 +12,24 @@ import java.util.List;
 public class TaskRepository {
     private TaskDAO taskDAO;
     private LiveData<List<Task>> allTasks;
+    private LiveData<List<Task>> allTaskByStatus;
 
     public TaskRepository(Application application) {
         MasterDb masterDb = MasterDb.getInstance(application);
         taskDAO = masterDb.taskDAO();
-        allTasks = taskDAO.getAllTasks();
     }
 
-    public void insert(Task note){ new InsertAsyncTask(taskDAO).execute(note); };
-    public void update(Task note){ new UpdateAsyncTask(taskDAO).execute(note); };
-    public void delete(Task note){ new DeleteAsyncTask(taskDAO).execute(note); };
-    public LiveData<List<Task>> getAllNotes(){return allTasks;};
+    public void insert(Task note){ new InsertAsyncTask(taskDAO).execute(note); }
+    public void update(Task note){ new UpdateAsyncTask(taskDAO).execute(note); }
+    public void delete(Task note){ new DeleteAsyncTask(taskDAO).execute(note); }
+    public LiveData<List<Task>> getAllNotes(){
+        allTasks = taskDAO.getAllTasks();
+        return allTasks;
+    }
+    public LiveData<List<Task>> getAllNotesByStatus(int status){
+        allTaskByStatus = taskDAO.getAllTasksByStatus(status);
+        return allTaskByStatus;
+    }
 
     private static class InsertAsyncTask extends AsyncTask<Task, Void, Void> {
         TaskDAO taskDAO;
@@ -65,4 +72,5 @@ public class TaskRepository {
             return null;
         }
     }
+
 }

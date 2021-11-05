@@ -24,4 +24,7 @@ public interface TaskDAO {
 
     @Query("select * from Task order by RecordId desc")
     LiveData<List<Task>> getAllTasks();
+
+    @Query("SELECT * FROM Task WHERE Status = :status")
+    LiveData<List<Task>> getAllTasksByStatus(int status);
 }
