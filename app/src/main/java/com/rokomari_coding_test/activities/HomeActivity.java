@@ -16,6 +16,7 @@ import com.rokomari_coding_test.fragments.DoneTaskFragment;
 import com.rokomari_coding_test.fragments.InProgressFragment;
 import com.rokomari_coding_test.fragments.OpenTaskFragment;
 import com.rokomari_coding_test.fragments.TestTaskFragment;
+import com.rokomari_coding_test.tools.Utils;
 
 public class HomeActivity extends AppCompatActivity{
     private ActivityHomeBinding activityBinding;
@@ -68,5 +69,10 @@ public class HomeActivity extends AppCompatActivity{
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Utils.exitApp(this);
     }
 }

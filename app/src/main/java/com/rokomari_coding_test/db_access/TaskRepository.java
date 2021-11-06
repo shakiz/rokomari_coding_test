@@ -19,9 +19,9 @@ public class TaskRepository {
         taskDAO = masterDb.taskDAO();
     }
 
-    public void insert(Task note){ new InsertAsyncTask(taskDAO).execute(note); }
-    public void update(Task note){ new UpdateAsyncTask(taskDAO).execute(note); }
-    public void delete(Task note){ new DeleteAsyncTask(taskDAO).execute(note); }
+    public void insert(Task task){ new InsertAsyncTask(taskDAO).execute(task); }
+    public void update(Task task){ new UpdateAsyncTask(taskDAO).execute(task); }
+    public void delete(Task task){ new DeleteAsyncTask(taskDAO).execute(task); }
     public LiveData<List<Task>> getAllNotes(){
         allTasks = taskDAO.getAllTasks();
         return allTasks;

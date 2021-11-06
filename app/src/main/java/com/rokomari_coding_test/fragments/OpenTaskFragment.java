@@ -93,6 +93,7 @@ public class OpenTaskFragment extends Fragment {
                 context.startActivity(
                         new Intent(context, TaskDetailsActivity.class)
                         .putExtra("task", task)
+                        .putExtra("screenType","edit")
                 );
             }
         });
@@ -102,6 +103,7 @@ public class OpenTaskFragment extends Fragment {
                 context.startActivity(
                         new Intent(context, TaskDetailsActivity.class)
                                 .putExtra("task", task)
+                                .putExtra("screenType","view")
                 );
             }
         });

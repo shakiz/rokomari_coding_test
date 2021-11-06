@@ -28,37 +28,33 @@ import java.util.Locale;
 public class TaskDetailsActivity extends AppCompatActivity {
     private ActivityTaskDetailsBinding taskDetailsBinding;
     private TaskViewModel taskViewModel;
-    private Task task;
+    private Task task = new Task();
     private int Status = 0;
+    private String screenType = "", action = "add";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         taskDetailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_task_details);
 
-        //region get intent data
-        getIntentData();
-        //endregion
-
         initObjects();
         bindUiWithComponents();
+        getIntentData();
     }
 
     //region get intent data
-    private void getIntentData(){
+    private void getIntentData() {
         if (getIntent().getExtras() != null) {
-            if (getIntent().getExtras().getParcelable("task") != null){
-                taskDetailsBinding.addNewTaskLayout.setVisibility(View.GONE);
-                taskDetailsBinding.existingTaskLayout.setVisibility(View.VISIBLE);
+            if (getIntent().getExtras().getParcelable("task") != null && getIntent().getStringExtra("screenType") != null) {
                 task = getIntent().getExtras().getParcelable("task");
-                taskDetailsBinding.CreateDateText.setText(task.getCreateDate());
-                taskDetailsBinding.TitleText.setText(task.getTitle());
-                taskDetailsBinding.DescriptionText.setText(task.getDescription());
-                taskDetailsBinding.DeadlineText.setText(task.getDeadline());
-                taskDetailsBinding.StatusText.setText(getTaskStatus(task.getStatus()));
+                screenType = getIntent().getStringExtra("screenType");
+                if (screenType.equals("view") && task.getRecordId() != 0) {
+                    updateUIForView();
+                } else if (screenType.equals("edit") && task.getRecordId() != 0) {
+                    updateUiForEdit();
+                }
             }
-        }
-        else{
+        } else {
             taskDetailsBinding.addNewTaskLayout.setVisibility(View.VISIBLE);
             taskDetailsBinding.existingTaskLayout.setVisibility(View.GONE);
         }
@@ -69,7 +65,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
         taskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
     }
 
-    private void bindUiWithComponents(){
+    private void bindUiWithComponents() {
         setSupportActionBar(taskDetailsBinding.toolBar);
         setSpinnerAdapter();
 
@@ -109,7 +105,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
         taskDetailsBinding.submitTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveTask();
+                saveOrUpdateTask();
             }
         });
 
@@ -124,57 +120,91 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
             }
         });
+
+        taskDetailsBinding.fabEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (task.getRecordId() != 0) {
+                    updateUiForEdit();
+                }
+            }
+        });
     }
 
-    private String getTaskStatus(int status){
-        if (status == 1){
+    private void updateUIForView() {
+        taskDetailsBinding.addNewTaskLayout.setVisibility(View.GONE);
+        taskDetailsBinding.existingTaskLayout.setVisibility(View.VISIBLE);
+        taskDetailsBinding.CreateDateText.setText(task.getCreateDate());
+        taskDetailsBinding.TitleText.setText(task.getTitle());
+        taskDetailsBinding.DescriptionText.setText(task.getDescription());
+        taskDetailsBinding.DeadlineText.setText(task.getDeadline());
+        taskDetailsBinding.StatusText.setText(getTaskStatus(task.getStatus()));
+        Status = task.getStatus();
+    }
+
+    private void updateUiForEdit() {
+        taskDetailsBinding.addNewTaskLayout.setVisibility(View.VISIBLE);
+        taskDetailsBinding.existingTaskLayout.setVisibility(View.GONE);
+        taskDetailsBinding.Title.setText(task.getTitle());
+        taskDetailsBinding.Description.setText(task.getDescription());
+        taskDetailsBinding.Deadline.setText(task.getDeadline());
+        taskDetailsBinding.Status.setSelection(task.getStatus(), true);
+        Status = task.getStatus();
+        action = "update";
+    }
+
+    private String getTaskStatus(int status) {
+        if (status == 1) {
             return "Open";
-        }
-        else if (status == 2){
+        } else if (status == 2) {
             return "In Progress";
-        }
-        else if (status == 3){
+        } else if (status == 3) {
             return "Test";
-        }
-        else if (status == 4){
+        } else if (status == 4) {
             return "Done";
-        }
-        else{
+        } else {
             return "Not Selected";
         }
     }
 
-    public void setSpinnerAdapter(){
-        String[] spinnerValue = {"Status","Open","In Progress","Test","Done"};
+    public void setSpinnerAdapter() {
+        String[] spinnerValue = {"Status", "Open", "In Progress", "Test", "Done"};
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, R.layout.spinner_drop, spinnerValue);
         spinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         taskDetailsBinding.Status.setAdapter(spinnerAdapter);
     }
 
-    private void saveTask() {
-        if (TextUtils.isEmpty(taskDetailsBinding.Title.getText().toString())){
+    private void saveOrUpdateTask() {
+        if (TextUtils.isEmpty(taskDetailsBinding.Title.getText().toString())) {
             Toast.makeText(getApplicationContext(), "Title can not be empty", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (TextUtils.isEmpty(taskDetailsBinding.Deadline.getText().toString())){
+        if (TextUtils.isEmpty(taskDetailsBinding.Deadline.getText().toString())) {
             Toast.makeText(getApplicationContext(), "Please select deadline", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (Status == 0){
+        if (Status == 0) {
             Toast.makeText(getApplicationContext(), "Please select task status", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Task task = new Task(System.currentTimeMillis(),
-                Utils.getCurrentDate(),
-                Status,
-                taskDetailsBinding.Title.getText().toString(),
-                taskDetailsBinding.Description.getText().toString(),
-                taskDetailsBinding.Deadline.getText().toString(),"","","");
-        taskViewModel.insert(task);
-        Toast.makeText(getApplicationContext(),"Task Saved",Toast.LENGTH_SHORT).show();
+        task.setCreateDate(Utils.getCurrentDate());
+        task.setStatus(Status);
+        task.setTitle(taskDetailsBinding.Title.getText().toString());
+        task.setDescription(taskDetailsBinding.Description.getText().toString());
+        task.setDeadline(taskDetailsBinding.Deadline.getText().toString());
+        task.setEmail("");
+        task.setPhoneNumber("");
+        task.setUrl("");
+        if (action.equals("add")) {
+            task.setRecordId(System.currentTimeMillis());
+            taskViewModel.insert(task);
+        } else {
+            taskViewModel.update(task);
+        }
+        Toast.makeText(getApplicationContext(), "Task Saved", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(TaskDetailsActivity.this, HomeActivity.class));
     }
 

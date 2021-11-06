@@ -96,6 +96,7 @@ public class TestTaskFragment extends Fragment {
                 context.startActivity(
                         new Intent(context, TaskDetailsActivity.class)
                                 .putExtra("task", task)
+                                .putExtra("screenType","edit")
                 );
             }
         });
@@ -105,6 +106,7 @@ public class TestTaskFragment extends Fragment {
                 context.startActivity(
                         new Intent(context, TaskDetailsActivity.class)
                                 .putExtra("task", task)
+                                .putExtra("screenType","view")
                 );
             }
         });
