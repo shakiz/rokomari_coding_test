@@ -3,6 +3,9 @@ package com.rokomari_coding_test.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,20 +15,14 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.rokomari_coding_test.R;
 import com.rokomari_coding_test.activities.details.TaskDetailsActivity;
 import com.rokomari_coding_test.adapters.RecyclerAdapterTask;
 import com.rokomari_coding_test.databinding.FragmentDoneTaskBinding;
-import com.rokomari_coding_test.databinding.FragmentTestTaskBinding;
 import com.rokomari_coding_test.db_access.TaskViewModel;
 import com.rokomari_coding_test.model.Task;
 
 import java.util.List;
-
 
 public class DoneTaskFragment extends Fragment {
     private FragmentDoneTaskBinding binding;
@@ -37,10 +34,12 @@ public class DoneTaskFragment extends Fragment {
         // Required empty public constructor
     }
 
+    //region single tone instance
     public static DoneTaskFragment newInstance() {
         DoneTaskFragment fragment = new DoneTaskFragment();
         return fragment;
     }
+    //endregion
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +49,7 @@ public class DoneTaskFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //region view binding
         context = inflater.getContext();
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_done_task, container, false);
         return binding.getRoot();
@@ -62,6 +62,7 @@ public class DoneTaskFragment extends Fragment {
         bindUIWithComponents();
     }
 
+    //region perform all UI interactions from here
     private void bindUIWithComponents() {
         binding.fabAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,8 +79,9 @@ public class DoneTaskFragment extends Fragment {
             }
         });
     }
+    //endregion
 
-    //region recycler adapter
+    //region recycler adapter for task list with all the listeners
     private void setRecyclerAdapter(){
         recyclerAdapterTask = new RecyclerAdapterTask();
         binding.mRecyclerViewTask.setLayoutManager(new LinearLayoutManager(context));

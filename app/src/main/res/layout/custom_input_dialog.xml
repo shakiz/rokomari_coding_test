@@ -1,0 +1,56 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fff3de">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:padding="8dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:src="@drawable/ic_url"
+        android:scaleType="fitCenter" />
+
+    <EditText
+        android:id="@+id/textInput"
+        android:layout_below="@id/icon"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/edit_text_back"
+        android:inputType="text"
+        android:ellipsize="end"
+        android:scrollHorizontally="true"
+        android:maxLines="1"
+        android:textColorHint="@color/md_grey_700"
+        android:hint="@string/enter_url"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textSize="16sp"
+        android:focusable="true"
+        android:textColor="@color/md_grey_800"/>
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="112dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/save_url"
+        android:background="#94db60"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_below="@id/textInput"
+        android:layout_marginBottom="20dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white" />
+
+</RelativeLayout>

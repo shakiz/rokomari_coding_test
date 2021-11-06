@@ -5,13 +5,19 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rokomari_coding_test.R;
@@ -45,7 +51,8 @@ public class TaskDetailsActivity extends AppCompatActivity {
     //region get intent data
     private void getIntentData() {
         if (getIntent().getExtras() != null) {
-            if (getIntent().getExtras().getParcelable("task") != null && getIntent().getStringExtra("screenType") != null) {
+            if (getIntent().getExtras().getParcelable("task") != null
+                    && getIntent().getStringExtra("screenType") != null) {
                 task = getIntent().getExtras().getParcelable("task");
                 screenType = getIntent().getStringExtra("screenType");
                 if (screenType.equals("view") && task.getRecordId() != 0) {
@@ -61,10 +68,13 @@ public class TaskDetailsActivity extends AppCompatActivity {
     }
     //endregion
 
+    //region init necessary objects
     private void initObjects() {
         taskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
     }
+    //endregion
 
+    //region perform all kind of UI interactions from here
     private void bindUiWithComponents() {
         setSupportActionBar(taskDetailsBinding.toolBar);
         setSpinnerAdapter();
@@ -129,8 +139,47 @@ public class TaskDetailsActivity extends AppCompatActivity {
                 }
             }
         });
-    }
 
+        taskDetailsBinding.UrlLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog("url", R.drawable.ic_url, getString(R.string.enter_url), getString(R.string.save_url));
+            }
+        });
+        taskDetailsBinding.PhoneLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog("phone", R.drawable.ic_phone, getString(R.string.enter_phone), getString(R.string.save_phone));
+            }
+        });
+        taskDetailsBinding.EmailLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog("email", R.drawable.ic_email, getString(R.string.enter_email), getString(R.string.save_email));
+            }
+        });
+        taskDetailsBinding.UrlLayoutView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog("url", R.drawable.ic_url, getString(R.string.enter_url), getString(R.string.save_url));
+            }
+        });
+        taskDetailsBinding.PhoneLayoutView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog("phone", R.drawable.ic_phone, getString(R.string.enter_phone), getString(R.string.save_phone));
+            }
+        });
+        taskDetailsBinding.EmailLayoutView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog("email", R.drawable.ic_email, getString(R.string.enter_email), getString(R.string.save_email));
+            }
+        });
+    }
+    //endregion
+
+    //region show/hide edit and view screen
     private void updateUIForView() {
         taskDetailsBinding.addNewTaskLayout.setVisibility(View.GONE);
         taskDetailsBinding.existingTaskLayout.setVisibility(View.VISIBLE);
@@ -152,28 +201,28 @@ public class TaskDetailsActivity extends AppCompatActivity {
         Status = task.getStatus();
         action = "update";
     }
+    //endregion
 
+    //region get task status
     private String getTaskStatus(int status) {
-        if (status == 1) {
-            return "Open";
-        } else if (status == 2) {
-            return "In Progress";
-        } else if (status == 3) {
-            return "Test";
-        } else if (status == 4) {
-            return "Done";
-        } else {
-            return "Not Selected";
-        }
+        if (status == 1) { return "Open"; }
+        else if (status == 2) { return "In Progress"; }
+        else if (status == 3) { return "Test"; }
+        else if (status == 4) { return "Done"; }
+        else { return "Not Selected"; }
     }
+    //endregion
 
+    //region set spinner adapter for task Status
     public void setSpinnerAdapter() {
         String[] spinnerValue = {"Status", "Open", "In Progress", "Test", "Done"};
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, R.layout.spinner_drop, spinnerValue);
         spinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         taskDetailsBinding.Status.setAdapter(spinnerAdapter);
     }
+    //endregion
 
+    //region save or update task to db
     private void saveOrUpdateTask() {
         if (TextUtils.isEmpty(taskDetailsBinding.Title.getText().toString())) {
             Toast.makeText(getApplicationContext(), "Title can not be empty", Toast.LENGTH_SHORT).show();
@@ -195,18 +244,87 @@ public class TaskDetailsActivity extends AppCompatActivity {
         task.setTitle(taskDetailsBinding.Title.getText().toString());
         task.setDescription(taskDetailsBinding.Description.getText().toString());
         task.setDeadline(taskDetailsBinding.Deadline.getText().toString());
-        task.setEmail("");
-        task.setPhoneNumber("");
-        task.setUrl("");
         if (action.equals("add")) {
             task.setRecordId(System.currentTimeMillis());
             taskViewModel.insert(task);
+            showConfirmationDialog(getString(R.string.task_saved_successfully));
         } else {
             taskViewModel.update(task);
+            showConfirmationDialog(getString(R.string.task_updated_successfully));
         }
-        Toast.makeText(getApplicationContext(), "Task Saved", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(TaskDetailsActivity.this, HomeActivity.class));
     }
+    //endregion
+
+    //region show all social dialog
+    public void showDialog(String layoutFor, int icon, String inputHintRes, String buttonTextRes){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.custom_input_dialog);
+
+        ImageView iconImg = dialog.findViewById(R.id.icon);
+        EditText inputField = dialog.findViewById(R.id.textInput);
+        Button dialogButton = dialog.findViewById(R.id.saveButton);
+
+        iconImg.setImageResource(icon);
+        inputField.setHint(inputHintRes);
+        dialogButton.setText(buttonTextRes);
+
+        if (layoutFor.equals("email")) {
+            if (!TextUtils.isEmpty(task.getEmail())){
+                inputField.setText(task.getEmail());
+            }
+        }
+        else if (layoutFor.equals("url")){
+            if(!TextUtils.isEmpty(task.getUrl())){
+                inputField.setText(task.getUrl());
+            }
+        }
+        else{
+            if (!TextUtils.isEmpty(task.getPhoneNumber())){
+                inputField.setText(task.getPhoneNumber());
+            }
+        }
+
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!TextUtils.isEmpty(inputField.getText().toString())){
+                    if (layoutFor.equals("email")) task.setEmail(inputField.getText().toString());
+                    else if (layoutFor.equals("url")) task.setUrl(inputField.getText().toString());
+                    else task.setPhoneNumber(inputField.getText().toString());
+                }
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
+    }
+    //endregion
+
+    //region show all social dialog
+    public void showConfirmationDialog(String messageText){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.confirmation_dialog);
+
+        Button dialogButton = dialog.findViewById(R.id.okButton);
+        TextView message = dialog.findViewById(R.id.message);
+
+        message.setText(messageText);
+
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                startActivity(new Intent(TaskDetailsActivity.this, HomeActivity.class));
+            }
+        });
+        dialog.show();
+    }
+    //endregion
 
     @Override
     public void onBackPressed() {

@@ -17,4 +17,13 @@
     <string name="submit">Submit</string>
     <string name="write_description">Write Description</string>
     <string name="status">Status</string>
+    <string name="save_url">Save URL</string>
+    <string name="enter_url">Enter URL</string>
+    <string name="enter_email">Enter E-mail</string>
+    <string name="save_email">Save E-mail</string>
+    <string name="enter_phone">Enter Phone</string>
+    <string name="save_phone">Save Phone</string>
+    <string name="ok">Ok</string>
+    <string name="task_saved_successfully">Task Saved Successfully</string>
+    <string name="task_updated_successfully">"Task Updated Successfully "</string>
 </resources>

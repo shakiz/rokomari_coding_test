@@ -33,10 +33,12 @@ public class OpenTaskFragment extends Fragment {
     public OpenTaskFragment() {
     }
 
+    //region single tone instance
     public static OpenTaskFragment newInstance() {
         OpenTaskFragment fragment = new OpenTaskFragment();
         return fragment;
     }
+    //endregion
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,7 @@ public class OpenTaskFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        //region view binding
         context = inflater.getContext();
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_open_task, container, false);
         return binding.getRoot();
@@ -59,6 +61,7 @@ public class OpenTaskFragment extends Fragment {
         bindUIWithComponents();
     }
 
+    //region perform all UI interactions from here
     private void bindUIWithComponents() {
         binding.fabAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,8 +78,9 @@ public class OpenTaskFragment extends Fragment {
             }
         });
     }
+    //endregion
 
-    //region recycler adapter
+    //region recycler adapter for task list with all the listeners
     private void setRecyclerAdapter(){
         recyclerAdapterTask = new RecyclerAdapterTask();
         binding.mRecyclerViewTask.setLayoutManager(new LinearLayoutManager(context));

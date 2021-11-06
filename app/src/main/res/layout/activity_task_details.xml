@@ -274,9 +274,12 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
+                            android:id="@+id/EmailLayout"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:clickable="true"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:orientation="vertical">
@@ -299,7 +302,10 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/PhoneLayout"
                             android:layout_width="0dp"
+                            android:clickable="true"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_gravity="center"
@@ -324,7 +330,10 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/UrlLayout"
                             android:layout_width="0dp"
+                            android:clickable="true"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_gravity="center"
@@ -575,9 +584,12 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
+                            android:id="@+id/EmailLayoutView"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:clickable="true"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:orientation="vertical">
@@ -588,6 +600,7 @@
                                 android:src="@drawable/ic_email"/>
 
                             <TextView
+                                android:id="@+id/emailText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/email"
@@ -600,8 +613,11 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/PhoneLayoutView"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
                             android:layout_weight="1"
                             android:layout_gravity="center"
                             android:gravity="center"
@@ -613,6 +629,7 @@
                                 android:src="@drawable/ic_phone"/>
 
                             <TextView
+                                android:id="@+id/phoneText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/phone"
@@ -625,8 +642,11 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/UrlLayoutView"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
                             android:layout_weight="1"
                             android:layout_gravity="center"
                             android:gravity="center"
@@ -638,6 +658,7 @@
                                 android:src="@drawable/ic_url"/>
 
                             <TextView
+                                android:id="@+id/urlText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/url"
